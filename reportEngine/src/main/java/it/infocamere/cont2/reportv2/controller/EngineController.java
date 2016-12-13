@@ -67,21 +67,21 @@ public class EngineController {
 		context = applicationContext;
 	}
 
-	@RequestMapping(value = "/requestTest", method = RequestMethod.POST, headers = "Accept=application/json", produces = "application/json")
-	public @ResponseBody ReportRequest printSimpleRequest() {
-		LoggerUtils.logNavigation();
-		ReportRequest request = new ReportRequest();
-		request.setDifferita(false);
-		request.setModello("test");
-		request.setTipologia("BIRT");
-		request.addParameter("p1", "param1");
-		request.addParameter("mapExample", new HashMap<String, String>() {
-			{
-				put("Test", "tt");
-			}
-		});
-		return request;
-	}
+//	@RequestMapping(value = "/requestTest", method = RequestMethod.POST, headers = "Accept=application/json", produces = "application/json")
+//	public @ResponseBody ReportRequest printSimpleRequest() {
+//		LoggerUtils.logNavigation();
+//		ReportRequest request = new ReportRequest();
+//		request.setDifferita(false);
+//		request.setModello("test");
+//		request.setTipologia("BIRT");
+//		request.addParameter("p1", "param1");
+//		request.addParameter("mapExample", new HashMap<String, String>() {
+//			{
+//				put("Test", "tt");
+//			}
+//		});
+//		return request;
+//	}
 
 	private byte[] getReportStream(ReportRequest reportRequest) throws Exception {
 		LoggerUtils.logNavigation();
