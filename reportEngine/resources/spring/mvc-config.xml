@@ -72,19 +72,49 @@
 	<!-- Parte relativa al db -->
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="java:comp/env/jdbc/contReportDS" />
-	
+
 	</bean>
 
-	<!-- Transaction manager per le transazioni db -->
-	<bean id="transactionManager"
-		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+
+
+
+	<bean id="hibernate4AnnotatedSessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
+
+		<property name="packagesToScan" value="it.infocamere.cont2.reportv2.dao.entity" />
+		<!-- Se si vuole la scansione classe per classe delle Entity -->
+		<!-- <property name="annotatedClasses"> -->
+		<!-- <list> -->
+		<!-- <value>it.infocamere.cont2.reportv2.dao.entity.Ente</value> -->
+		<!-- </list> -->
+		<!-- </property> -->
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<!-- Da rimuovere se si usa il transaction manager altrimenti non va 
+					il getCurrentSession -->
+				<!-- <prop key="hibernate.current_session_context_class">thread</prop> -->
+				<prop key="hibernate.show_sql">false</prop>
+			</props>
+		</property>
 	</bean>
+
+
+	<!-- Transaction manager per le transazioni db -->
+	<!-- Delego le transazioni hibernate a spring. Altrimenti ogni volta dovrei 
+		aprire una transaction e fare la commit -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+	</bean>
+
 
 	<bean id="dbManagerDao" class="it.infocamere.cont2.reportv2.dao.manager.DbManagerImpl">
 		<constructor-arg>
 			<ref bean="dataSource" />
 		</constructor-arg>
+		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
 	</bean>
 
 

@@ -1,16 +1,14 @@
 package it.infocamere.cont2.reportv2.dao.manager;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import it.infocamere.cont2.reportv2.commons.LoggerUtils;
 import it.infocamere.cont2.reportv2.dao.entity.Ente;
@@ -19,33 +17,46 @@ public class DbManagerImpl implements DbManagerInterface {
 	Logger log = Logger.getLogger(DbManagerImpl.class);
 	private DataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
+	private SessionFactory sessionFactory;
+
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
 
 	public DbManagerImpl(DataSource dataSoruce) {
 		this.dataSource = dataSoruce;
-		jdbcTemplate= new JdbcTemplate(dataSource);
+		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
 	@Override
+	@Transactional
 	public List<Ente> getEnti() {
-		String sql = "SELECT * FROM ente";
-		List<Ente> enti = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Ente.class));
+		Session session=this.sessionFactory.getCurrentSession();
+		try {
+
+			List<Ente> enti = session.createQuery("from Ente").list();
+			return enti;
+		} catch (Exception exc) {
+			LoggerUtils.errorLog(exc);
+		} finally {
 		
-		return enti;
+		}
+
+		return null;
 	}
 
 	@Override
 	@Transactional
 	public Ente insertEnte(Ente ente) {
-		try{
-		SimpleJdbcInsert jdbcInser = new SimpleJdbcInsert(dataSource).withSchemaName("reportV2").withTableName("ente");
-		  Map<String, Object> parameters = new HashMap<String, Object>(2);
-	        parameters.put("idEnte",ente.getId());
-	        parameters.put("dsEnte", ente.getDsEnte());
-	        
-	        jdbcInser.execute(parameters);
-		}
-		catch (Exception exc){
+		Session session=this.sessionFactory.getCurrentSession();
+		try {
+			//non necessario con il transaction manager attivo
+			//Transaction tx = session.beginTransaction();
+			session.persist(ente);
+			//tx.commit();
+		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
+		} finally {
 		}
 		return ente;
 	}

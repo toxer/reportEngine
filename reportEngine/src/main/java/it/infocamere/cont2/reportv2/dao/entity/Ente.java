@@ -12,18 +12,20 @@ import javax.persistence.Table;
 @Table(name = "ente")
 public class Ente implements Serializable {
 	@Id
-	@GeneratedValue
-	private String id;
+	@Column(name = "id_ente",length=20,nullable=false)
+	private String idEnte;
 	@Column(name = "ds_ente",length=255,nullable=false)
 	private String dsEnte;
 
 		
-	public String getId() {
-		return id;
+
+
+	public String getIdEnte() {
+		return idEnte;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setIdEnte(String idEnte) {
+		this.idEnte = idEnte;
 	}
 
 	public String getDsEnte() {
