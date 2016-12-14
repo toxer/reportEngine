@@ -143,14 +143,12 @@ public class EngineController {
 		LoggerUtils.logNavigation();
 		String errorMessage = validationRequest(reportRequest);
 		try {
-
 			if (errorMessage != null) {
 				throw new Exception("Richiesta report non valida");
-
 			}
-
 			byte[] report = getReportStream(reportRequest);
 			if (report == null) {
+				throw new Exception("Richiesta report non valida");
 			}
 			ReportResponse reportResponse = new ReportResponse();
 			reportResponse.setNote("Stampa del report " + reportRequest.getModello() + " conclusa");
@@ -163,18 +161,14 @@ public class EngineController {
 				response.setContentLengthLong(report.length);
 				response.getOutputStream().write(report);
 				response.getOutputStream().flush();
-
 			}
-
 		} catch (Exception exc) {
 			ReportResponse reportResponse = new ReportResponse();
 			response.setStatus(500);
 			reportResponse.setErrorMessage(errorMessage);
 			response.setHeader("reponse", gson.toJson(reportResponse));
 			LoggerUtils.errorLog(exc);
-
 		}
-
 	}
 
 	@RequestMapping(value = "/stampaRapida", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")

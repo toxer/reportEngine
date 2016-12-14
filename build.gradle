@@ -138,6 +138,9 @@ subprojects{
 			compile group: 'net.sf.jasperreports', name: 'jasperreports', version: '6.4.0'
 			//birt da download
 			compile fileTree(dir: "${project.projectDir}/src/library",includes:['**/*.jar'])
+			//mysql
+			providedCompile group: 'mysql', name: 'mysql-connector-java', version: '6.0.5'
+			
 		
 		
 			//birt da maven non funziona

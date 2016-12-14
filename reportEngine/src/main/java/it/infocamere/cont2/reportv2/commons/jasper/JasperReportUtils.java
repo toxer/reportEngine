@@ -16,7 +16,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import antlr.StringUtils;
 import it.infocamere.cont2.reportv2.commons.LoggerUtils;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
