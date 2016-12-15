@@ -119,9 +119,9 @@ subprojects{
 			compile group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final'
 
 
-			//thymeleaf
-			compile group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.2.RELEASE'
-			compile group: 'org.thymeleaf', name: 'thymeleaf-spring4', version: '3.0.2.RELEASE'
+			//sitemesh
+			compile group: 'org.sitemesh', name: 'sitemesh', version: '3.0.1'
+			
 			//servlet container
 			providedCompile 'org.apache.tomcat:tomcat-catalina:8.5.8'
 			provided group: 'org.apache.tomcat', name: 'tomcat-servlet-api', version: '8.5.8'

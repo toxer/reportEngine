@@ -19,7 +19,7 @@ import it.infocamere.cont2.reportv2.dao.manager.DbManagerInterface;
 
 @EnableWebMvc
 @Controller
-public class ConsoleController {
+public class CommandController {
 	@Autowired
 	private DbManagerInterface dbManagerDao;
 	
