@@ -1,0 +1,84 @@
+{
+	"variables": [],
+	"info": {
+		"name": "MotoreReportConsoleCommand",
+		"_postman_id": "b76a4836-eab2-b247-a517-cc6e5276e5b9",
+		"description": "Comandi chiamati dalla console",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ClearAll",
+			"request": {
+				"url": "http://localhost:8080/reportEngineV2/clearAll",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": "Pulisce tutti gli enti e i report"
+			},
+			"response": []
+		},
+		{
+			"name": "TestEnte",
+			"request": {
+				"url": "http://localhost:8080/reportEngineV2/testEnte",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": "Stampa una lista di enti per l'inserimento"
+			},
+			"response": []
+		},
+		{
+			"name": "InsertEnti",
+			"request": {
+				"url": "http://localhost:8080/reportEngineV2/insertEnti",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n  {\n    \"idEnte\": \"000001\",\n    \"dsEnte\": \"Ente di test\",\n    \"reports\": [\n      {\n        \"idReport\": null,\n        \"modello\": \"Report_test_1\",\n        \"tipologia\": \"JRXML\",\n        \"descrizione\": \"Report di test1\",\n        \"note\": null,\n        \"lingua\": \"it\",\n        \"absolutePath\": \"abs_path1\",\n        \"tempoMedioEsecuzione\": null,\n        \"enti\": null\n      },\n      {\n        \"idReport\": null,\n        \"modello\": \"Report_test_2\",\n        \"tipologia\": \"BIRT\",\n        \"descrizione\": \"Report di test2\",\n        \"note\": null,\n        \"lingua\": \"de\",\n        \"absolutePath\": \"abs_path2\",\n        \"tempoMedioEsecuzione\": null,\n        \"enti\": null\n      }\n    ]\n  },\n  {\n    \"idEnte\": \"000000\",\n    \"dsEnte\": \"Ente di test\",\n    \"reports\": [\n      {\n        \"idReport\": null,\n        \"modello\": \"Report_test_1\",\n        \"tipologia\": \"JRXML\",\n        \"descrizione\": \"Report di test1\",\n        \"note\": null,\n        \"lingua\": \"it\",\n        \"absolutePath\": \"abs_path1\",\n        \"tempoMedioEsecuzione\": null,\n        \"enti\": null\n      }\n    ]\n  }\n]"
+				},
+				"description": "Inserisce una lista di enti completi di reports"
+			},
+			"response": []
+		},
+		{
+			"name": "Lista enti",
+			"request": {
+				"url": "http://localhost:8080/reportEngineV2/enti",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": "Da una lista di enti senza la lista dei report"
+			},
+			"response": []
+		},
+		{
+			"name": "Seleziona report in base al modello,ente e lingua",
+			"request": {
+				"url": "http://localhost:8080/reportEngineV2/reportByName/Report_test_1/000001/it",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n  {\n    \"idEnte\": \"000001\",\n    \"dsEnte\": \"Ente di test\",\n    \"reports\": [\n      {\n        \"idReport\": null,\n        \"modello\": \"Report_test_1\",\n        \"tipologia\": \"JRXML\",\n        \"descrizione\": \"Report di test1\",\n        \"note\": null,\n        \"lingua\": \"it\",\n        \"absolutePath\": \"abs_path1\",\n        \"tempoMedioEsecuzione\": null,\n        \"enti\": null\n      },\n      {\n        \"idReport\": null,\n        \"modello\": \"Report_test_2\",\n        \"tipologia\": \"BIRT\",\n        \"descrizione\": \"Report di test2\",\n        \"note\": null,\n        \"lingua\": \"de\",\n        \"absolutePath\": \"abs_path2\",\n        \"tempoMedioEsecuzione\": null,\n        \"enti\": null\n      }\n    ]\n  },\n  {\n    \"idEnte\": \"000000\",\n    \"dsEnte\": \"Ente di test\",\n    \"reports\": [\n      {\n        \"idReport\": null,\n        \"modello\": \"Report_test_1\",\n        \"tipologia\": \"JRXML\",\n        \"descrizione\": \"Report di test1\",\n        \"note\": null,\n        \"lingua\": \"it\",\n        \"absolutePath\": \"abs_path1\",\n        \"tempoMedioEsecuzione\": null,\n        \"enti\": null\n      }\n    ]\n  }\n]"
+				},
+				"description": "Se non trovato il modello per l'ente si seleziona quello di default con lo stesso nome, se non viene impostata la lingua si seleziona quella it"
+			},
+			"response": []
+		}
+	]
+}
