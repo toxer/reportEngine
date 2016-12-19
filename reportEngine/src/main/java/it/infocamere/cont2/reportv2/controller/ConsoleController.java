@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @EnableWebMvc
 @Controller
-public class ConsoleCotroller {
+public class ConsoleController {
 	@RequestMapping(value = "/test", method = RequestMethod.GET)
 	public String test(HttpServletRequest request, HttpServletResponse response) {
 		return "test/he";

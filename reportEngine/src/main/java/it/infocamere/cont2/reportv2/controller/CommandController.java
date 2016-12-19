@@ -1,5 +1,6 @@
 package it.infocamere.cont2.reportv2.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,6 +58,13 @@ public class CommandController {
 		return ente;
 	}
 
+	@RequestMapping(value = "/insertEnti", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody List<Ente> insertEnti(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody List<Ente> enti) {
+		dbManagerDao.insertEnti(enti);
+		return enti;
+	}
+
 	@RequestMapping(value = "/deleteEnte", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
 	public @ResponseBody Ente deleteEnte(HttpServletRequest request, HttpServletResponse response,
 			@RequestBody Ente ente) {
@@ -82,8 +90,31 @@ public class CommandController {
 		return dbManagerDao.getReportsByModelName(modelName);
 	}
 
+	@JsonView(Views.minimalView.class)
+	@RequestMapping(value = "/reportByName/{modello}/{idEnte}/{language}", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Report getReportsByEnteLanguage(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable(value = "modello") String modelName, @PathVariable(value = "idEnte") String idEnte,
+			@PathVariable(value = "language") String language) {
+		return dbManagerDao.getReportByModelEnteLanguage(modelName, idEnte, language);
+	}
+
+	@JsonView(Views.minimalView.class)
+	@RequestMapping(value = "/reportByName/{modello}/{idEnte}", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public @ResponseBody Report getReportsByEnte(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable(value = "modello") String modelName, @PathVariable(value = "idEnte") String idEnte) {
+		return dbManagerDao.getReportByModelEnteLanguage(modelName, idEnte, null);
+	}
+
+	// TODO Comment this!!
+	@JsonView(Views.minimalView.class)
+	@RequestMapping(value = "/clearAll", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
+	public void clearAll(HttpServletRequest request, HttpServletResponse response) {
+		dbManagerDao.clearAll();
+	}
+
 	@RequestMapping(value = "/testEnte", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
-	public @ResponseBody Ente testEnte(HttpServletRequest request, HttpServletResponse response) {
+	public @ResponseBody List<Ente> testEnte(HttpServletRequest request, HttpServletResponse response) {
+		List<Ente> enti = new ArrayList<Ente>();
 		Ente ente = new Ente();
 		ente.setDsEnte("Ente di test");
 		ente.setIdEnte("000001");
@@ -94,6 +125,7 @@ public class CommandController {
 		report.setTipologia("JRXML");
 		report.setAbsolutePath("abs_path1");
 		ente.addReport(report);
+		enti.add(ente);
 		Report report2 = new Report();
 		report2.setModello("Report_test_2");
 		report2.setDescrizione("Report di test2");
@@ -101,6 +133,16 @@ public class CommandController {
 		report2.setTipologia("BIRT");
 		report2.setAbsolutePath("abs_path2");
 		ente.addReport(report2);
-		return ente;
+		Ente standard = new Ente();
+		standard.setDsEnte("Ente di test");
+		standard.setIdEnte("000000");
+		report.setModello("Report_test_1");
+		report.setDescrizione("Report di test1");
+		report.setLingua("it");
+		report.setTipologia("JRXML");
+		report.setAbsolutePath("abs_path1");
+		standard.addReport(report);
+		enti.add(standard);
+		return enti;
 	}
 }

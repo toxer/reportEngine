@@ -10,8 +10,14 @@ public interface DbManagerInterface {
 	public List<Ente>getCompletedEnti();
 	public Ente getEnte(String enteId);
 	public Ente insertEnte(Ente ente);
+	public List<Ente> insertEnti(List<Ente> enti);
+
 	public Ente deleteEnte(Ente ente);
 	public List<Report> getReportsByEnte(Ente ente);
 	public Report getReportsByModelName(String modelName);
+	public Report getReportByModelEnteLanguage(String modelName,String ente,String language);
+	
+	//TODO comment this!!
+	public void clearAll();
 
 }

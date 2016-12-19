@@ -34,7 +34,7 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Override
 	@Transactional
 	public List<Ente> getEnti() {
-		Session session=this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.getCurrentSession();
 		try {
 
 			List<Ente> enti = session.createQuery("from Ente").list();
@@ -42,49 +42,48 @@ public class DbManagerImpl implements DbManagerInterface {
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
 		} finally {
-		
+
 		}
 
 		return null;
 	}
-	
 
 	@Override
 	@Transactional
 	public List<Ente> getCompletedEnti() {
-		Session session=this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.getCurrentSession();
 		try {
 
 			Query query = session.createQuery("from Ente ");
 			List<Ente> enti = query.list();
-			for (Ente e : enti){
+			for (Ente e : enti) {
 				Hibernate.initialize(e.getReports());
 			}
 			return enti;
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
 		} finally {
-		
+
 		}
 
 		return null;
 	}
-	
+
 	@Override
 	@Transactional
 	public Ente getEnte(String enteId) {
-		Session session=this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.getCurrentSession();
 		try {
 
 			Query query = session.createQuery("from Ente e where e.idEnte = :idEnte");
-			query.setParameter("idEnte",enteId);
-			Ente ente = (Ente)query.uniqueResult();
+			query.setParameter("idEnte", enteId);
+			Ente ente = (Ente) query.uniqueResult();
 			Hibernate.initialize(ente.getReports());
 			return ente;
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
 		} finally {
-		
+
 		}
 
 		return null;
@@ -93,12 +92,12 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Override
 	@Transactional
 	public Ente insertEnte(Ente ente) {
-		Session session=this.sessionFactory.getCurrentSession();
+		Session session = this.sessionFactory.getCurrentSession();
 		try {
-			//non necessario con il transaction manager attivo
-			//Transaction tx = session.beginTransaction();
+			// non necessario con il transaction manager attivo
+			// Transaction tx = session.beginTransaction();
 			session.persist(ente);
-			//tx.commit();
+			// tx.commit();
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
 		} finally {
@@ -108,11 +107,29 @@ public class DbManagerImpl implements DbManagerInterface {
 
 	@Override
 	@Transactional
+	public List<Ente> insertEnti(List<Ente> enti) {
+		Session session = this.sessionFactory.getCurrentSession();
+		try {
+			// non necessario con il transaction manager attivo
+			// Transaction tx = session.beginTransaction();
+			for (Ente ente : enti) {
+				session.persist(ente);
+			}
+			// tx.commit();
+		} catch (Exception exc) {
+			LoggerUtils.errorLog(exc);
+		} finally {
+		}
+		return enti;
+	}
+
+	@Override
+	@Transactional
 	public Ente deleteEnte(Ente ente) {
-		Session session=this.sessionFactory.getCurrentSession();
-		try {			
+		Session session = this.sessionFactory.getCurrentSession();
+		try {
 			session.delete(ente);
-			//tx.commit();
+			// tx.commit();
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
 		} finally {
@@ -123,47 +140,93 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Override
 	@Transactional
 	public List<Report> getReportsByEnte(Ente ente) {
-		
-		Session session=this.sessionFactory.getCurrentSession();
+
+		Session session = this.sessionFactory.getCurrentSession();
 		try {
 
 			Query query = session.createQuery("select r from Ente e join e.reports r  where e.idEnte = :idEnte");
 			query.setParameter("idEnte", ente.getIdEnte());
-			List<Report>reports = query.list();
+			List<Report> reports = query.list();
 			return reports;
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
 		} finally {
-		
+
 		}
 
 		return null;
-		
+
 	}
-	
 
 	@Override
 	@Transactional
 	public Report getReportsByModelName(String modelName) {
-		
-		Session session=this.sessionFactory.getCurrentSession();
+
+		Session session = this.sessionFactory.getCurrentSession();
 		try {
 
 			Query query = session.createQuery("from Report where modello = :modello");
 			query.setParameter("modello", modelName);
-			Report reports = (Report)query.uniqueResult();
+			Report reports = (Report) query.uniqueResult();
 			Hibernate.initialize(reports.getEnti());
 			return reports;
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
 		} finally {
-		
+
 		}
 
 		return null;
-		
+
 	}
-	
-	
+
+	@Override
+	@Transactional
+	public Report getReportByModelEnteLanguage(String modelName, String idEnte, String lingua) {
+
+		Session session = this.sessionFactory.getCurrentSession();
+		try {
+
+			Query query = session.createQuery(
+					"select r from Report r join r.enti e where r.modello = :modello and e.idEnte = :idEnte and r.lingua = :lingua");
+			query.setParameter("modello", modelName);
+			query.setParameter("idEnte", idEnte);
+			query.setParameter("lingua", lingua != null ? lingua.toLowerCase() : "it");
+			Report reports = (Report) query.uniqueResult();
+			if (reports == null) {
+				// cerco il report di default
+				query.setParameter("idEnte", "000000");
+				reports = (Report) query.uniqueResult();
+			}
+			return reports;
+		} catch (Exception exc) {
+			LoggerUtils.errorLog(exc);
+		} finally {
+
+		}
+
+		return null;
+
+	}
+
+	@Override
+	@Transactional
+	public void clearAll() {
+		Session session = this.sessionFactory.getCurrentSession();
+		try {
+
+			Query query = session.createQuery("delete from Report");
+			query.executeUpdate();
+
+			query = session.createQuery("delete from Ente");
+			query.executeUpdate();
+
+		} catch (Exception exc) {
+			LoggerUtils.errorLog(exc);
+		} finally {
+
+		}
+
+	}
 
 }

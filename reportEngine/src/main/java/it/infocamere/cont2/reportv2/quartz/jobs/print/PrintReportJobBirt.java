@@ -25,6 +25,12 @@ public class PrintReportJobBirt extends ReportJobAbstractQuartz {
 		BirtReportUtils birtReportUtils = applicationContext.getBean(BirtReportUtils.class);
 
 		IReportEngine birtReportEngine = birtReportUtils.getBirtEngine();
+		
+		//recupero il file in base alla richiesta
+		String ente = request.getEnte();
+		String lingua = request.getLingua()!=null?request.getLingua():"it";
+		String modello = request.getModello();		
+				
 		File f = new File("/tmp/prova.rptdesign");
 		LoggerUtils.applicationLog(f.exists() + "");
 		IReportRunnable irr = birtReportEngine.openReportDesign("/tmp/prova.rptdesign");
