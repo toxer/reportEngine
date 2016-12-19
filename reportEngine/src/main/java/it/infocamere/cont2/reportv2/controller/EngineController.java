@@ -33,6 +33,7 @@ import it.infocamere.cont2.reportv2.commons.jasper.JasperReportUtils;
 import it.infocamere.cont2.reportv2.commons.jsonobj.ReportRequest;
 import it.infocamere.cont2.reportv2.commons.jsonobj.ReportResponse;
 import it.infocamere.cont2.reportv2.commons.jsonobj.Response;
+import it.infocamere.cont2.reportv2.dao.manager.DbManagerInterface;
 import it.infocamere.cont2.reportv2.quartz.jobs.print.PrintReportJobBirt;
 import it.infocamere.cont2.reportv2.quartz.jobs.print.PrintReportJobJrxml;
 import it.infocamere.cont2.reportv2.quartz.jobs.print.ReportJob;
@@ -54,6 +55,8 @@ public class EngineController {
 	// getFatturaByImpresa(@RequestBody StandardRequest jsonString) {
 	//
 	// }
+	@Autowired
+	private DbManagerInterface dbManagerDao;
 
 	Scheduler scheduler = null;
 
@@ -89,10 +92,12 @@ public class EngineController {
 		if (reportRequest.getTipologia().equalsIgnoreCase("JASPER")) {
 			// modello jasper
 			reportJob = new PrintReportJobJrxml();
+			reportJob.setDbManager(dbManagerDao);
 			byte[] report = reportJob.printReport(context, reportRequest);
 			return report;
 		} else if (reportRequest.getTipologia().equalsIgnoreCase("BIRT")) {
 			reportJob = new PrintReportJobBirt();
+			reportJob.setDbManager(dbManagerDao);
 			byte[] report = reportJob.printReport(context, reportRequest);
 			return report;
 		}

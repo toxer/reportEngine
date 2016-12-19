@@ -29,7 +29,8 @@ public class PrintReportJobBirt extends ReportJobAbstractQuartz {
 		//recupero il file in base alla richiesta
 		String ente = request.getEnte();
 		String lingua = request.getLingua()!=null?request.getLingua():"it";
-		String modello = request.getModello();		
+		String modello = request.getModello();	
+		
 				
 		File f = new File("/tmp/prova.rptdesign");
 		LoggerUtils.applicationLog(f.exists() + "");
