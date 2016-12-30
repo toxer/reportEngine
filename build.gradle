@@ -1,4 +1,15 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE")
+    }
+}
+
+
 allprojects {
+apply plugin: 'org.springframework.boot'
 		apply plugin: 'eclipse-wtp'
 
 
@@ -90,6 +101,8 @@ subprojects{
 
 
 		apply plugin:"war"
+		
+		
 		project.webAppDirName="WebRoot"
 		eclipse{
 			 wtp {
@@ -105,7 +118,7 @@ subprojects{
 		dependencies{
 			//entity comuni
 
-
+		
 
 			//spring core
 			compile group: 'org.springframework', name: 'spring-context', version: '4.3.4.RELEASE'
@@ -115,17 +128,20 @@ subprojects{
 			//spring mvc
 			compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.4.RELEASE'
 			compile group: 'javax.servlet', name: 'jstl', version: '1.2'
+			
 			//jsr303 validation
 			compile group: 'javax.validation', name: 'validation-api', version: '1.1.0.Final'
-
-
+			//spring boot
+			  compile("org.springframework.boot:spring-boot-starter-web")
+    		  providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+			
 			//sitemesh
 			compile group: 'org.sitemesh', name: 'sitemesh', version: '3.0.1'
 			
 			//servlet container
 			providedCompile 'org.apache.tomcat:tomcat-catalina:8.5.8'
 			provided group: 'org.apache.tomcat', name: 'tomcat-servlet-api', version: '8.5.8'
-			provided group: 'javax.servlet', name: 'servlet-api', version: '3.0.1'
+			provided group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
 			provided group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '8.5.8'
 			//spring transaction
 			compile group: 'org.springframework', name: 'spring-tx', version: '4.3.4.RELEASE'
@@ -204,3 +220,9 @@ subprojects{
 
 
 }
+springBoot {
+    mainClass = "it.infocamere.cont2.reportv2.application.Application"
+}
+//bootRepackage {
+  //  mainClass = 'it.infocamere.cont2.reportv2.application.Application'
+//}
