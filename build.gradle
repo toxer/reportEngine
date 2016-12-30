@@ -33,6 +33,8 @@ apply plugin: 'org.springframework.boot'
 
 subprojects{
 	apply plugin:"java"
+	apply plugin: 'java-library-distribution'
+	
 	sourceCompatibility =1.8
 	repositories {
 		mavenCentral()
@@ -216,13 +218,24 @@ subprojects{
 		war {
 			baseName="reportEngineV2"
 	   	}
+	   	jar{
+	   		baseName="reportEngineV2"
+	   		exclude 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA', 'META-INF/*.MF'
+
+		    manifest {
+		        attributes 'Main-Class': 'it.infocamere.cont2.reportv2.application.Application',
+		                   'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' ')
+		    }
+		}
+	}
 
 
 
-}
+
+
 springBoot {
     mainClass = "it.infocamere.cont2.reportv2.application.Application"
 }
-//bootRepackage {
-  //  mainClass = 'it.infocamere.cont2.reportv2.application.Application'
-//}
+bootRepackage {
+    mainClass = "it.infocamere.cont2.reportv2.application.Application"
+}
