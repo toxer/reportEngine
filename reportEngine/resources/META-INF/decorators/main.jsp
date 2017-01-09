@@ -5,7 +5,7 @@
  </head>
  
  <body>
- This is the default body in decorator:
+ This is the default body in decorator aa:
  <sitemesh:write property='body'/>
  </body>
 </html>

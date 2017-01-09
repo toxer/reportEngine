@@ -1,12 +1,8 @@
 package it.infocamere.cont2.reportv2.application;
 
-import java.net.URL;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
@@ -14,6 +10,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import it.infocamere.cont2.reportv2.commons.LoggerUtils;
 
 public class StartupListener implements ServletContextListener {
+	@SuppressWarnings("unused")
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 		// sv,ts,pr
 		String ambiente = System.getProperty("ambiente");

@@ -9,7 +9,7 @@ buildscript {
 
 
 allprojects {
-apply plugin: 'org.springframework.boot'
+		apply plugin: 'org.springframework.boot'
 		apply plugin: 'eclipse-wtp'
 
 
@@ -32,6 +32,7 @@ apply plugin: 'org.springframework.boot'
 	}
 
 subprojects{
+
 	apply plugin:"java"
 	apply plugin: 'java-library-distribution'
 	
@@ -53,6 +54,9 @@ subprojects{
 		maven{
 			url "https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/"
 		}
+		maven{
+			url "https://oss.sonatype.org/content/repositories/appfuse/"
+		}
   	}
   	dependencies{
 		sshAntTask 'org.apache.ant:ant-jsch:1.7.1', 'jsch:jsch:0.1.29'
@@ -60,7 +64,7 @@ subprojects{
 		compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
 		compile group: 'commons-io', name: 'commons-io', version: '2.5'
 		
-		compile group: 'javax', name: 'javaee-api', version: '7.0'
+		
 		////hibernate (la versione sopra non funziona con spring 4)
 		compile group: 'org.hibernate', name: 'hibernate-core', version: '4.3.11.Final'
 		compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
@@ -100,12 +104,12 @@ subprojects{
 
 	project(':reportEngine'){
 
-
+		def tomcatVersion = "8.5.6";
 
 		apply plugin:"war"
 		
 		
-		project.webAppDirName="WebRoot"
+		project.webAppDirName="webapp"
 		eclipse{
 			 wtp {
 		    	facet {
@@ -136,15 +140,27 @@ subprojects{
 			//spring boot
 			  compile("org.springframework.boot:spring-boot-starter-web")
     		  providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    		  compile group: 'javax', name: 'javaee-api', version: '7.0'
+    		  //compile group: 'javax', name: 'javaee-web-api', version: '7.0'
+    		  
+    		
+    		  
 			
 			//sitemesh
 			compile group: 'org.sitemesh', name: 'sitemesh', version: '3.0.1'
 			
 			//servlet container
-			providedCompile 'org.apache.tomcat:tomcat-catalina:8.5.8'
-			provided group: 'org.apache.tomcat', name: 'tomcat-servlet-api', version: '8.5.8'
-			provided group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
-			provided group: 'org.apache.tomcat', name: 'tomcat-jasper', version: '8.5.8'
+			providedRuntime "org.apache.tomcat:tomcat-catalina:$tomcatVersion"
+			providedRuntime group: 'org.apache.tomcat', name: 'tomcat-servlet-api', version: "$tomcatVersion"
+			providedRuntime group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
+			providedRuntime group: 'javax.el', name: 'javax.el-api', version: '3.0.0'
+			
+			providedRuntime group: 'org.apache.tomcat', name: 'tomcat-jasper', version: "$tomcatVersion"
+			//compile("org.apache.tomcat.embed:tomcat-embed-jasper:$tomcatVersion")
+			providedRuntime group: 'org.apache.tomcat', name: 'tomcat-jasper-el', version: "$tomcatVersion"
+			providedRuntime group: 'com.sun.el', name: 'el-ri', version: '1.2'
+			
+			
 			//spring transaction
 			compile group: 'org.springframework', name: 'spring-tx', version: '4.3.4.RELEASE'
 			compile group: 'org.springframework', name: 'spring-orm', version: '4.3.4.RELEASE'
@@ -210,6 +226,7 @@ subprojects{
 	        // where do classpath resources like *.properties files live?
 	        resources {
 	            srcDir "${project.projectDir}/resources"
+	           
 	        }
 	    }
 	}
@@ -232,10 +249,10 @@ subprojects{
 
 
 
-
-springBoot {
-    mainClass = "it.infocamere.cont2.reportv2.application.Application"
-}
-bootRepackage {
-    mainClass = "it.infocamere.cont2.reportv2.application.Application"
-}
+	//per il lancio da eclipse e da gradle
+	springBoot {
+	    mainClass = "it.infocamere.cont2.reportv2.application.Application"
+	}
+	bootRepackage {
+	    mainClass = "it.infocamere.cont2.reportv2.application.Application"
+	}
