@@ -3,11 +3,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Bootstrap -->
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="frontend/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script href="jquery/jquery.min.js"></script>
+<script src="frontend/jquery/jquery.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="frontend/bootstrap/js/bootstrap.min.js"></script>
+<!-- Angular -->
+<link href="frontend/angular/angular-csp.css" rel="stylesheet">
+<script src="frontend/angular/angular.min.js"></script>
+
 <title><sitemesh:write property='title' /></title>
 <sitemesh:write property='head' />
 </head>
@@ -37,7 +41,9 @@
 		</div>
 	</div>
 	<footer class="section section-primary">
-		<div class="container"></div>
+		<div class="container">
+		
+		</div>
 	</footer>
 </body>
 </html>
