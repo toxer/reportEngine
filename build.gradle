@@ -103,7 +103,7 @@ subprojects{
 
 
 	project(':reportEngine'){
-
+		//8.5.8 non va come autoeseguibile
 		def tomcatVersion = "8.5.6";
 
 		apply plugin:"war"
@@ -243,6 +243,9 @@ subprojects{
 		        attributes 'Main-Class': 'it.infocamere.cont2.reportv2.application.Application',
 		                   'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' ')
 		    }
+		}
+		jar.into('static') {
+    		from('src/main/webapp')
 		}
 	}
 
