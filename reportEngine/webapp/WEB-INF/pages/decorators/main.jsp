@@ -1,3 +1,4 @@
+
 <html>
 <head>
 <meta charset="utf-8">
@@ -36,12 +37,12 @@
 		</div>
 	</div>
 	<div class="section">
-		<div class="container">
+		<div class="container-fluid">
 			<sitemesh:write property='body' />
 		</div>
 	</div>
 	<footer class="section section-primary">
-		<div class="container">
+		<div class="container-fluid">
 		
 		</div>
 	</footer>
