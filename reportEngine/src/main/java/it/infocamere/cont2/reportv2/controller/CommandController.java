@@ -34,10 +34,10 @@ public class CommandController {
 		return dbManagerDao.getEnti();
 	}
 
-	@JsonView(Views.completeView.class)
 	@RequestMapping(value = "/entiCompleted", method = RequestMethod.POST, headers = "Accept=*/*", produces = "application/json")
 	public @ResponseBody List<Ente> getAllEntiCompleted(HttpServletRequest request, HttpServletResponse response) {
-		return dbManagerDao.getCompletedEnti();
+		List<Ente>enti = dbManagerDao.getCompletedEnti();
+		return enti;
 	}
 
 	// la notation completeEnteView impedisce il caricamento dei report lazy
