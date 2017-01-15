@@ -23,9 +23,7 @@ import it.infocamere.cont2.reportv2.dao.entity.viewprofile.Views;
 public class Ente implements Serializable {
 	@Id
 	@Column(name = "id_ente", length = 20, nullable = false)
-	@JsonView(Views.minimalView.class)
 	private String idEnte;
-	@JsonView(Views.minimalView.class)
 	@Column(name = "ds_ente", length = 255, nullable = false)
 	private String dsEnte;
 	

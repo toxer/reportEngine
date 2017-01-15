@@ -10,7 +10,11 @@
 	<div class="row-fluid">
 		<form:form id="ftForm" action="/reportEngineV2/home"
 			modelAttribute="homeObj" method="post" role="form">
-			<form:select path="ente" items="${enti}" />
+			<div class="form-group">
+				<div class="col-md-2">
+					<form:select class="form-control" path="ente" items="${enti}" />
+				</div>
+			</div>
 			<form:button type="submit">Invio</form:button>
 			
 		</form:form>

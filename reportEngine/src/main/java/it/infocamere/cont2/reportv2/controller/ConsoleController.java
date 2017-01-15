@@ -31,8 +31,9 @@ public class ConsoleController {
 	public Map<String, String> getEnti() {
 		Map<String, String> map = new HashMap<String, String>();
 		List<Ente> enti = dbManagerDao.getEnti();
+		map.put(null,"Seleziona un ente");
 		for (Ente e : enti) {
-			map.put(e.getIdEnte(), e.getDsEnte());
+			map.put(e.getIdEnte(), e.getDsEnte()+" -"+e.getIdEnte()+"-");
 		}
 		return map;
 	}

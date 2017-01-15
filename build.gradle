@@ -127,12 +127,13 @@ subprojects{
 		
 
 			//spring core
-			compile group: 'org.springframework', name: 'spring-context', version: '4.3.4.RELEASE'
+		//	compile group: 'org.springframework', name: 'spring-context', version: '4.3.4.RELEASE'
 			//per le mail
-			compile group: 'org.springframework', name: 'spring-context-support', version: '4.3.4.RELEASE'
+		//	compile group: 'org.springframework', name: 'spring-context-support', version: '4.3.4.RELEASE'
+			compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '1.4.3.RELEASE'
 			
 			//spring mvc
-			compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.4.RELEASE'
+		//	compile group: 'org.springframework', name: 'spring-webmvc', version: '4.3.4.RELEASE'
 			compile group: 'javax.servlet', name: 'jstl', version: '1.2'
 			
 			//jsr303 validation
@@ -165,8 +166,8 @@ subprojects{
 			//spring transaction
 			compile group: 'org.springframework', name: 'spring-tx', version: '4.3.4.RELEASE'
 			compile group: 'org.springframework', name: 'spring-orm', version: '4.3.4.RELEASE'
-			compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.5'
-            compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.5'
+	//		compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.8.5'
+    //        compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.8.5'
 			//httpclient
 			//compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.2'
 			

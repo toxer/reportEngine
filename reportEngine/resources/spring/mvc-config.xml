@@ -27,7 +27,6 @@
 <!-- 	</bean> -->
 
 
-
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
@@ -115,27 +114,27 @@
 	</bean>
 
 
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="collabora.infocamere.it" />
-		<property name="port" value="465" />
-		<property name="username" value="yyi9246" />
-		<property name="password" value="mt448032" />
+<!-- 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> -->
+<!-- 		<property name="host" value="collabora.infocamere.it" /> -->
+<!-- 		<property name="port" value="465" /> -->
+<!-- 		<property name="username" value="yyi9246" /> -->
+<!-- 		<property name="password" value="mt448032" /> -->
 
-		<property name="javaMailProperties">
-			<props>
-				<prop key="mail.transport.protocol">smtps</prop>
-				<prop key="mail.smtp.from">marco.tozzato@infocamere.it</prop>
-				<prop key="mail.smtps.auth">true</prop>
-				<prop key="mail.smtp.starttls.enable">true</prop>
-				<prop key="mail.smtp.timeout">10000</prop>
-				<prop key="mail.smtp.connectiontimeout">10000</prop>
-				<prop key="mail.debug">true</prop>
-				<prop key="mail.smtp.socketFactory.port">465</prop>
-				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
-				<prop key="mail.smtp.socketFactory.fallback">false</prop>
-			</props>
-		</property>
-	</bean>
+<!-- 		<property name="javaMailProperties"> -->
+<!-- 			<props> -->
+<!-- 				<prop key="mail.transport.protocol">smtps</prop> -->
+<!-- 				<prop key="mail.smtp.from">marco.tozzato@infocamere.it</prop> -->
+<!-- 				<prop key="mail.smtps.auth">true</prop> -->
+<!-- 				<prop key="mail.smtp.starttls.enable">true</prop> -->
+<!-- 				<prop key="mail.smtp.timeout">10000</prop> -->
+<!-- 				<prop key="mail.smtp.connectiontimeout">10000</prop> -->
+<!-- 				<prop key="mail.debug">true</prop> -->
+<!-- 				<prop key="mail.smtp.socketFactory.port">465</prop> -->
+<!-- 				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop> -->
+<!-- 				<prop key="mail.smtp.socketFactory.fallback">false</prop> -->
+<!-- 			</props> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
 
 
 </beans>

@@ -2,7 +2,6 @@ package it.infocamere.cont2.reportv2.controller;
 
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +12,6 @@ import org.apache.log4j.Logger;
 import org.quartz.Scheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.http.MediaType;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,9 +41,9 @@ public class EngineController {
 
 	private GsonBuilder builder = new GsonBuilder();
 	private Gson gson = builder.create();
-
-	@Autowired
-	JavaMailSenderImpl mailSender;
+//
+//	@Autowired
+//	JavaMailSenderImpl mailSender;
 	Logger navigationLog = Logger.getLogger("navigationLog");
 	Logger mainLog = Logger.getLogger("mainLog");
 	// @RequestMapping(value="/fatturaJson", method=RequestMethod.POST,

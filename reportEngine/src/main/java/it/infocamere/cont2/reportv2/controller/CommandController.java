@@ -78,6 +78,8 @@ public class CommandController {
 			@RequestBody Ente ente) {
 		return dbManagerDao.getReportsByEnte(ente);
 	}
+	
+	
 
 	// la notation completeReportView impedisce il caricamento dei report lazy
 	// dentro
