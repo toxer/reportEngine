@@ -11,6 +11,7 @@
 
 	<context:component-scan base-package="it.infocamere.cont2.reportv2.controller" />
 	<context:component-scan base-package="it.infocamere.cont2.reportv2.commons.birt" />
+	<context:component-scan base-package="it.infocamere.cont2.reportv2.dao.manager" />
 	<context:component-scan
 		base-package="it.infocamere.cont2.reportv2.quartz.jobs.print" />
 
@@ -58,83 +59,11 @@
 
 	</bean>-->
 	
-	
-		<bean id="dataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-
-		<property name="driverClassName" value="${jdbc.driverClassName}" />
-	    <property name="url" value="${jdbc.url}" />
-	    <property name="username" value="${jdbc.username}"/>
-	    <property name="password" value="${jdbc.password}"/>
-	</bean>
-	
-	<context:property-placeholder location="classpath:/config/jdbc.properties"/>
-	
 
 
 
 
-	<bean id="hibernate4AnnotatedSessionFactory"
-		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-		<property name="dataSource" ref="dataSource" />
 
-		<property name="packagesToScan" value="it.infocamere.cont2.reportv2.dao.entity" />
-		<!-- Se si vuole la scansione classe per classe delle Entity -->
-		<!-- <property name="annotatedClasses"> -->
-		<!-- <list> -->
-		<!-- <value>it.infocamere.cont2.reportv2.dao.entity.Ente</value> -->
-		<!-- </list> -->
-		<!-- </property> -->
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-				<!-- Da rimuovere se si usa il transaction manager altrimenti non va 
-					il getCurrentSession -->
-				<!-- <prop key="hibernate.current_session_context_class">thread</prop> -->
-				<prop key="hibernate.show_sql">false</prop>
-			</props>
-		</property>
-	</bean>
-
-
-	<!-- Transaction manager per le transazioni db -->
-	<!-- Delego le transazioni hibernate a spring. Altrimenti ogni volta dovrei 
-		aprire una transaction e fare la commit -->
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-	</bean>
-
-
-	<bean id="dbManagerDao" class="it.infocamere.cont2.reportv2.dao.manager.DbManagerImpl">
-		<constructor-arg>
-			<ref bean="dataSource" />
-		</constructor-arg>
-		<property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
-	</bean>
-
-
-<!-- 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> -->
-<!-- 		<property name="host" value="collabora.infocamere.it" /> -->
-<!-- 		<property name="port" value="465" /> -->
-<!-- 		<property name="username" value="yyi9246" /> -->
-<!-- 		<property name="password" value="mt448032" /> -->
-
-<!-- 		<property name="javaMailProperties"> -->
-<!-- 			<props> -->
-<!-- 				<prop key="mail.transport.protocol">smtps</prop> -->
-<!-- 				<prop key="mail.smtp.from">marco.tozzato@infocamere.it</prop> -->
-<!-- 				<prop key="mail.smtps.auth">true</prop> -->
-<!-- 				<prop key="mail.smtp.starttls.enable">true</prop> -->
-<!-- 				<prop key="mail.smtp.timeout">10000</prop> -->
-<!-- 				<prop key="mail.smtp.connectiontimeout">10000</prop> -->
-<!-- 				<prop key="mail.debug">true</prop> -->
-<!-- 				<prop key="mail.smtp.socketFactory.port">465</prop> -->
-<!-- 				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop> -->
-<!-- 				<prop key="mail.smtp.socketFactory.fallback">false</prop> -->
-<!-- 			</props> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
 
 
 </beans>

@@ -2,42 +2,41 @@ package it.infocamere.cont2.reportv2.dao.manager;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 
 import it.infocamere.cont2.reportv2.commons.LoggerUtils;
 import it.infocamere.cont2.reportv2.dao.entity.Ente;
 import it.infocamere.cont2.reportv2.dao.entity.Report;
 
+
+@Repository
+@Transactional
+@Primary
 public class DbManagerImpl implements DbManagerInterface {
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	
 	Logger log = Logger.getLogger(DbManagerImpl.class);
 	private DataSource dataSource;
-	private JdbcTemplate jdbcTemplate;
-	private SessionFactory sessionFactory;
-
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-
-	public DbManagerImpl(DataSource dataSoruce) {
-		this.dataSource = dataSoruce;
-		jdbcTemplate = new JdbcTemplate(dataSource);
-	}
 
 	@Override
-	@Transactional
+	
+
 	public List<Ente> getEnti() {
-		Session session = this.sessionFactory.getCurrentSession();
+	
 		try {
 
-			List<Ente> enti = session.createQuery("from Ente").list();
+			List<Ente> enti = entityManager.createQuery("from Ente").getResultList();
 			return enti;
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
@@ -51,11 +50,11 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Override
 	@Transactional
 	public List<Ente> getCompletedEnti() {
-		Session session = this.sessionFactory.getCurrentSession();
+		
 		try {
 
-			Query query = session.createQuery("from Ente ");
-			List<Ente> enti = query.list();
+			Query query = entityManager.createQuery("from Ente ");
+			List<Ente> enti = query.getResultList();
 			for (Ente e : enti) {
 				Hibernate.initialize(e.getReports());
 			}
@@ -72,12 +71,11 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Override
 	@Transactional
 	public Ente getEnte(String enteId) {
-		Session session = this.sessionFactory.getCurrentSession();
 		try {
 
-			Query query = session.createQuery("from Ente e where e.idEnte = :idEnte");
+			Query query =entityManager.createQuery("from Ente e where e.idEnte = :idEnte");
 			query.setParameter("idEnte", enteId);
-			Ente ente = (Ente) query.uniqueResult();
+			Ente ente = (Ente) query.getSingleResult();
 			Hibernate.initialize(ente.getReports());
 			return ente;
 		} catch (Exception exc) {
@@ -92,11 +90,10 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Override
 	@Transactional
 	public Ente insertEnte(Ente ente) {
-		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			// non necessario con il transaction manager attivo
 			// Transaction tx = session.beginTransaction();
-			session.persist(ente);
+			entityManager.persist(ente);
 			// tx.commit();
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
@@ -108,12 +105,11 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Override
 	@Transactional
 	public List<Ente> insertEnti(List<Ente> enti) {
-		Session session = this.sessionFactory.getCurrentSession();
 		try {
 			// non necessario con il transaction manager attivo
 			// Transaction tx = session.beginTransaction();
 			for (Ente ente : enti) {
-				session.persist(ente);
+				entityManager.persist(ente);
 			}
 			// tx.commit();
 		} catch (Exception exc) {
@@ -126,9 +122,8 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Override
 	@Transactional
 	public Ente deleteEnte(Ente ente) {
-		Session session = this.sessionFactory.getCurrentSession();
 		try {
-			session.delete(ente);
+			entityManager.remove(ente);
 			// tx.commit();
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
@@ -141,12 +136,11 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Transactional
 	public List<Report> getReportsByEnte(Ente ente) {
 
-		Session session = this.sessionFactory.getCurrentSession();
 		try {
 
-			Query query = session.createQuery("select r from Ente e join e.reports r  where e.idEnte = :idEnte");
+			Query query = entityManager.createQuery("select r from Ente e join e.reports r  where e.idEnte = :idEnte");
 			query.setParameter("idEnte", ente.getIdEnte());
-			List<Report> reports = query.list();
+			List<Report> reports = query.getResultList();
 			return reports;
 		} catch (Exception exc) {
 			LoggerUtils.errorLog(exc);
@@ -162,12 +156,11 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Transactional
 	public Report getReportsByModelName(String modelName) {
 
-		Session session = this.sessionFactory.getCurrentSession();
 		try {
 
-			Query query = session.createQuery("from Report where modello = :modello");
+			Query query = entityManager.createQuery("from Report where modello = :modello");
 			query.setParameter("modello", modelName);
-			Report reports = (Report) query.uniqueResult();
+			Report reports = (Report) query.getSingleResult();
 			Hibernate.initialize(reports.getEnti());
 			return reports;
 		} catch (Exception exc) {
@@ -184,19 +177,18 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Transactional
 	public Report getReportByModelEnteLanguage(String modelName, String idEnte, String lingua) {
 
-		Session session = this.sessionFactory.getCurrentSession();
 		try {
 
-			Query query = session.createQuery(
+			Query query = entityManager.createQuery(
 					"select r from Report r join r.enti e where r.modello = :modello and e.idEnte = :idEnte and r.lingua = :lingua");
 			query.setParameter("modello", modelName);
 			query.setParameter("idEnte", idEnte);
 			query.setParameter("lingua", lingua != null ? lingua.toLowerCase() : "it");
-			Report reports = (Report) query.uniqueResult();
+			Report reports = (Report) query.getSingleResult();
 			if (reports == null) {
 				// cerco il report di default
 				query.setParameter("idEnte", "000000");
-				reports = (Report) query.uniqueResult();
+				reports = (Report) query.getSingleResult();
 			}
 			return reports;
 		} catch (Exception exc) {
@@ -212,13 +204,12 @@ public class DbManagerImpl implements DbManagerInterface {
 	@Override
 	@Transactional
 	public void clearAll() {
-		Session session = this.sessionFactory.getCurrentSession();
 		try {
 
-			Query query = session.createQuery("delete from Report");
+			Query query = entityManager.createQuery("delete from Report");
 			query.executeUpdate();
 
-			query = session.createQuery("delete from Ente");
+			query = entityManager.createQuery("delete from Ente");
 			query.executeUpdate();
 
 		} catch (Exception exc) {
